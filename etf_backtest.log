@@ -1,0 +1,403 @@
+2025-12-17 13:43:22,316 - ETFBacktestManager - INFO - ETF回测管理器初始化完成，数据目录: download
+2025-12-17 13:43:22,317 - ETFBacktestManager - INFO - 开始加载ETF数据...
+2025-12-17 13:43:22,318 - ETFBacktestManager - INFO - 自动检测到 1318 个ETF文件
+2025-12-17 13:43:27,027 - ETFBacktestManager - INFO - 成功加载 1318/1318 个ETF数据
+2025-12-17 13:43:27,027 - ETFBacktestManager - INFO - 可用ETF: ['159001_货币ETF', '159003_招商快线ETF', '159005_汇添富快钱ETF', '159100_巴西ETF', '159101_港股通科技ETF基金', '159102_港股通生物科技ETF', '159103_金融科技ETF汇添富', '159105_恒生生物科技ETF易方达', '159106_民企300ETF', '159107_创业板软件ETF富国']...
+2025-12-17 13:43:27,028 - ETFBacktestManager - INFO - 选择ETF 159001_货币ETF 进行回测
+2025-12-17 13:43:27,069 - ETFBacktestManager - INFO - ETF 159001_货币ETF 数据集拆分完成:
+2025-12-17 13:43:27,069 - ETFBacktestManager - INFO -   - 训练集: 2716 条, 1970-01-01 至 1970-01-01
+2025-12-17 13:43:27,070 - ETFBacktestManager - INFO -   - 验证集: 0 条, NaT 至 NaT
+2025-12-17 13:43:27,070 - ETFBacktestManager - INFO -   - 测试集: 0 条, NaT 至 NaT
+2025-12-17 13:43:27,071 - ETFBacktestManager - ERROR - 测试数据为空，程序退出
+2025-12-17 13:46:13,263 - ETFBacktestManager - INFO - ETF回测管理器初始化完成，数据目录: download
+2025-12-17 13:46:13,264 - ETFBacktestManager - INFO - 开始加载ETF数据...
+2025-12-17 13:46:13,266 - ETFBacktestManager - INFO - 自动检测到 1318 个ETF文件
+2025-12-17 13:46:16,337 - ETFBacktestManager - INFO - 成功加载 1318/1318 个ETF数据
+2025-12-17 13:46:16,337 - ETFBacktestManager - INFO - 可用ETF: ['159001_货币ETF', '159003_招商快线ETF', '159005_汇添富快钱ETF', '159100_巴西ETF', '159101_港股通科技ETF基金', '159102_港股通生物科技ETF', '159103_金融科技ETF汇添富', '159105_恒生生物科技ETF易方达', '159106_民企300ETF', '159107_创业板软件ETF富国']...
+2025-12-17 13:46:16,337 - ETFBacktestManager - INFO - 选择ETF 159001_货币ETF 进行回测
+2025-12-17 13:46:16,357 - ETFBacktestManager - INFO - ETF 159001_货币ETF 数据集拆分完成:
+2025-12-17 13:46:16,357 - ETFBacktestManager - INFO -   - 训练集: 2716 条, 1970-01-01 至 1970-01-01
+2025-12-17 13:46:16,358 - ETFBacktestManager - INFO -   - 验证集: 0 条, NaT 至 NaT
+2025-12-17 13:46:16,358 - ETFBacktestManager - INFO -   - 测试集: 0 条, NaT 至 NaT
+2025-12-17 13:46:16,359 - ETFBacktestManager - ERROR - 测试数据为空，程序退出
+2025-12-17 13:56:56,387 - ETFBacktestManager - INFO - ETF回测管理器初始化完成，数据目录: download, 结果目录: results, 图表目录: plots
+2025-12-17 13:56:56,387 - ETFBacktestManager - INFO - 开始加载ETF数据...
+2025-12-17 13:56:56,389 - ETFBacktestManager - INFO - 自动检测到 1318 个ETF文件
+2025-12-17 13:57:03,827 - ETFBacktestManager - INFO - 成功加载 1318/1318 个ETF数据
+2025-12-17 13:57:03,827 - ETFBacktestManager - INFO - 可用ETF: ['159001_货币ETF', '159003_招商快线ETF', '159005_汇添富快钱ETF', '159100_巴西ETF', '159101_港股通科技ETF基金', '159102_港股通生物科技ETF', '159103_金融科技ETF汇添富', '159105_恒生生物科技ETF易方达', '159106_民企300ETF', '159107_创业板软件ETF富国']...
+2025-12-17 13:57:03,828 - ETFBacktestManager - INFO - 选择ETF 159001_货币ETF 进行回测
+2025-12-17 13:57:03,829 - ETFBacktestManager - INFO - ETF 159001_货币ETF 数据集拆分完成:
+2025-12-17 13:57:03,829 - ETFBacktestManager - INFO -   - 训练集: 1629 条, 2014-10-20 至 2021-06-25
+2025-12-17 13:57:03,829 - ETFBacktestManager - INFO -   - 验证集: 543 条, 2021-06-28 至 2023-09-15
+2025-12-17 13:57:03,830 - ETFBacktestManager - INFO -   - 测试集: 544 条, 2023-09-18 至 2025-12-17
+2025-12-17 13:57:03,830 - ETFBacktestManager - INFO - 开始测试集回测 for 159001_货币ETF
+2025-12-17 13:57:03,830 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:03,830 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 5, 'ma_long': 20, 'rsi_period': 14, 'rsi_overbought': 70, 'rsi_oversold': 30, 'stop_loss_pct': 0.02, 'take_profit_pct': 0.05}
+2025-12-17 13:57:03,831 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:04,036 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 5, MA Long 20, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 13:57:04,037 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:04,039 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135704.json
+2025-12-17 13:57:18,044 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_test_20251217_135704.png
+2025-12-17 13:57:18,044 - ETFBacktestManager - INFO - 开始参数优化 for 159001_货币ETF，使用验证集
+2025-12-17 13:57:18,045 - ETFBacktestManager - INFO - 开始参数优化 for ETF 159001_货币ETF...
+2025-12-17 13:57:18,045 - ETFBacktestManager - INFO - 参数范围: {'ma_short': [3, 5, 8], 'ma_long': [15, 20, 25], 'rsi_overbought': [65, 70, 75], 'rsi_oversold': [25, 30, 35]}
+2025-12-17 13:57:18,045 - ETFBacktestManager - INFO - 参数组合数量 (81) 超过 max_evals (10)，将只评估前 10 个组合
+2025-12-17 13:57:18,046 - ETFBacktestManager - INFO - 评估参数组合 1/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 13:57:18,046 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:18,046 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 13:57:18,047 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:18,264 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 13:57:18,265 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:18,268 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135718.json
+2025-12-17 13:57:18,268 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:18,269 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:18,270 - ETFBacktestManager - INFO - 评估参数组合 2/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 30}
+2025-12-17 13:57:18,270 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:18,271 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 30}
+2025-12-17 13:57:18,272 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:18,577 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 30) Ending Value 100000.00
+2025-12-17 13:57:18,577 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:18,579 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135718.json
+2025-12-17 13:57:18,579 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:18,580 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:18,580 - ETFBacktestManager - INFO - 评估参数组合 3/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 35}
+2025-12-17 13:57:18,580 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:18,580 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 35}
+2025-12-17 13:57:18,581 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:18,774 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 35) Ending Value 100000.00
+2025-12-17 13:57:18,775 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:18,777 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135718.json
+2025-12-17 13:57:18,777 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:18,777 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:18,778 - ETFBacktestManager - INFO - 评估参数组合 4/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 25}
+2025-12-17 13:57:18,778 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:18,779 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 25}
+2025-12-17 13:57:18,780 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:18,987 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 25) Ending Value 100000.00
+2025-12-17 13:57:18,988 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:18,989 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135718.json
+2025-12-17 13:57:18,990 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:18,990 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:18,990 - ETFBacktestManager - INFO - 评估参数组合 5/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 30}
+2025-12-17 13:57:18,991 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:18,992 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 30}
+2025-12-17 13:57:18,993 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:19,189 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 13:57:19,189 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:19,191 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135719.json
+2025-12-17 13:57:19,191 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:19,192 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:19,192 - ETFBacktestManager - INFO - 评估参数组合 6/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 35}
+2025-12-17 13:57:19,192 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:19,192 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 35}
+2025-12-17 13:57:19,193 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:19,352 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 35) Ending Value 100000.00
+2025-12-17 13:57:19,354 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:19,356 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135719.json
+2025-12-17 13:57:19,356 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:19,356 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:19,357 - ETFBacktestManager - INFO - 评估参数组合 7/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 25}
+2025-12-17 13:57:19,357 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:19,357 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 25}
+2025-12-17 13:57:19,358 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:19,516 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 25) Ending Value 100000.00
+2025-12-17 13:57:19,517 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:19,518 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135719.json
+2025-12-17 13:57:19,518 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:19,518 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:19,519 - ETFBacktestManager - INFO - 评估参数组合 8/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 30}
+2025-12-17 13:57:19,519 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:19,519 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 30}
+2025-12-17 13:57:19,520 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:19,677 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 30) Ending Value 100000.00
+2025-12-17 13:57:19,678 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:19,679 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135719.json
+2025-12-17 13:57:19,680 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:19,680 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:19,680 - ETFBacktestManager - INFO - 评估参数组合 9/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 35}
+2025-12-17 13:57:19,680 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:19,680 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 35}
+2025-12-17 13:57:19,681 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:19,843 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 35) Ending Value 100000.00
+2025-12-17 13:57:19,844 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:19,846 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135719.json
+2025-12-17 13:57:19,846 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:19,847 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:19,847 - ETFBacktestManager - INFO - 评估参数组合 10/10: {'ma_short': 3, 'ma_long': 20, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 13:57:19,847 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:19,847 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 20, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 13:57:19,848 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:20,029 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 20, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 13:57:20,029 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:20,031 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_135720.json
+2025-12-17 13:57:20,031 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 13:57:20,031 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 13:57:20,034 - ETFBacktestManager - INFO - 参数优化结果已保存至: results\optimization_159001_货币ETF_20251217_135720.json
+2025-12-17 13:57:20,034 - ETFBacktestManager - INFO - 最佳参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}, sharpe: -1000000000.0000
+2025-12-17 13:57:20,034 - ETFBacktestManager - INFO - 使用最佳参数在测试集上运行: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 13:57:20,035 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 13:57:20,035 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 13:57:20,035 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 13:57:20,185 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 13:57:20,185 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 13:57:20,187 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_optimized_20251217_135720.json
+2025-12-17 13:57:23,622 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_test_optimized_20251217_135720.png
+2025-12-17 14:00:08,958 - ETFBacktestManager - INFO - ETF回测管理器初始化完成，数据目录: download, 结果目录: results, 图表目录: plots
+2025-12-17 14:00:08,959 - ETFBacktestManager - INFO - 开始加载ETF数据...
+2025-12-17 14:00:08,960 - ETFBacktestManager - INFO - 自动检测到 1318 个ETF文件
+2025-12-17 14:00:17,372 - ETFBacktestManager - INFO - 成功加载 1318/1318 个ETF数据
+2025-12-17 14:00:17,373 - ETFBacktestManager - INFO - 可用ETF: ['159001_货币ETF', '159003_招商快线ETF', '159005_汇添富快钱ETF', '159100_巴西ETF', '159101_港股通科技ETF基金', '159102_港股通生物科技ETF', '159103_金融科技ETF汇添富', '159105_恒生生物科技ETF易方达', '159106_民企300ETF', '159107_创业板软件ETF富国']...
+2025-12-17 14:00:17,373 - ETFBacktestManager - INFO - 选择ETF 159001_货币ETF 进行回测
+2025-12-17 14:00:17,373 - ETFBacktestManager - INFO - ETF 159001_货币ETF 数据集拆分完成:
+2025-12-17 14:00:17,373 - ETFBacktestManager - INFO -   - 训练集: 1629 条, 2014-10-20 至 2021-06-25
+2025-12-17 14:00:17,374 - ETFBacktestManager - INFO -   - 验证集: 543 条, 2021-06-28 至 2023-09-15
+2025-12-17 14:00:17,374 - ETFBacktestManager - INFO -   - 测试集: 544 条, 2023-09-18 至 2025-12-17
+2025-12-17 14:00:17,374 - ETFBacktestManager - INFO - 开始测试集回测 for 159001_货币ETF
+2025-12-17 14:00:17,374 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:17,374 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 5, 'ma_long': 20, 'rsi_period': 14, 'rsi_overbought': 70, 'rsi_oversold': 30, 'stop_loss_pct': 0.02, 'take_profit_pct': 0.05}
+2025-12-17 14:00:17,375 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:17,585 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 5, MA Long 20, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:00:17,587 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:17,589 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140017.json
+2025-12-17 14:00:22,472 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_test_20251217_140017.png
+2025-12-17 14:00:22,473 - ETFBacktestManager - INFO - 开始参数优化 for 159001_货币ETF，使用验证集
+2025-12-17 14:00:22,474 - ETFBacktestManager - INFO - 开始参数优化 for ETF 159001_货币ETF...
+2025-12-17 14:00:22,474 - ETFBacktestManager - INFO - 参数范围: {'ma_short': [3, 5, 8], 'ma_long': [15, 20, 25], 'rsi_overbought': [65, 70, 75], 'rsi_oversold': [25, 30, 35]}
+2025-12-17 14:00:22,474 - ETFBacktestManager - INFO - 参数组合数量 (81) 超过 max_evals (10)，将只评估前 10 个组合
+2025-12-17 14:00:22,474 - ETFBacktestManager - INFO - 评估参数组合 1/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:00:22,475 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:22,475 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:00:22,476 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:22,679 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:00:22,680 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:22,682 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140022.json
+2025-12-17 14:00:22,682 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:22,683 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:22,683 - ETFBacktestManager - INFO - 评估参数组合 2/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 30}
+2025-12-17 14:00:22,683 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:22,684 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 30}
+2025-12-17 14:00:22,684 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:22,873 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:00:22,873 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:22,876 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140022.json
+2025-12-17 14:00:22,877 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:22,877 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:22,878 - ETFBacktestManager - INFO - 评估参数组合 3/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 35}
+2025-12-17 14:00:22,878 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:22,878 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 35}
+2025-12-17 14:00:22,879 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:23,131 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 35) Ending Value 100000.00
+2025-12-17 14:00:23,132 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:23,133 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140023.json
+2025-12-17 14:00:23,134 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:23,134 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:23,134 - ETFBacktestManager - INFO - 评估参数组合 4/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 25}
+2025-12-17 14:00:23,134 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:23,135 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 25}
+2025-12-17 14:00:23,135 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:23,340 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:00:23,341 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:23,343 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140023.json
+2025-12-17 14:00:23,343 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:23,343 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:23,343 - ETFBacktestManager - INFO - 评估参数组合 5/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 30}
+2025-12-17 14:00:23,344 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:23,344 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 30}
+2025-12-17 14:00:23,345 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:23,564 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:00:23,565 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:23,567 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140023.json
+2025-12-17 14:00:23,568 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:23,568 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:23,568 - ETFBacktestManager - INFO - 评估参数组合 6/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 35}
+2025-12-17 14:00:23,568 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:23,568 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 35}
+2025-12-17 14:00:23,569 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:23,773 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 35) Ending Value 100000.00
+2025-12-17 14:00:23,775 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:23,776 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140023.json
+2025-12-17 14:00:23,776 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:23,777 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:23,777 - ETFBacktestManager - INFO - 评估参数组合 7/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 25}
+2025-12-17 14:00:23,777 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:23,777 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 25}
+2025-12-17 14:00:23,778 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:23,963 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:00:23,965 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:23,967 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140023.json
+2025-12-17 14:00:23,968 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:23,968 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:23,968 - ETFBacktestManager - INFO - 评估参数组合 8/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 30}
+2025-12-17 14:00:23,969 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:23,969 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 30}
+2025-12-17 14:00:23,970 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:24,147 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:00:24,148 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:24,149 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140024.json
+2025-12-17 14:00:24,150 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:24,150 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:24,151 - ETFBacktestManager - INFO - 评估参数组合 9/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 35}
+2025-12-17 14:00:24,151 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:24,151 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 35}
+2025-12-17 14:00:24,152 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:24,327 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 35) Ending Value 100000.00
+2025-12-17 14:00:24,327 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:24,329 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140024.json
+2025-12-17 14:00:24,329 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:24,330 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:24,330 - ETFBacktestManager - INFO - 评估参数组合 10/10: {'ma_short': 3, 'ma_long': 20, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:00:24,331 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:24,331 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 20, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:00:24,332 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:24,556 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 20, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:00:24,557 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:24,559 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140024.json
+2025-12-17 14:00:24,559 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:00:24,560 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:00:24,563 - ETFBacktestManager - INFO - 参数优化结果已保存至: results\optimization_159001_货币ETF_20251217_140024.json
+2025-12-17 14:00:24,564 - ETFBacktestManager - INFO - 最佳参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}, sharpe: -1000000000.0000
+2025-12-17 14:00:24,564 - ETFBacktestManager - INFO - 使用最佳参数在测试集上运行: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:00:24,565 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:00:24,565 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:00:24,566 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:00:24,759 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:00:24,760 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:00:24,762 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_optimized_20251217_140024.json
+2025-12-17 14:00:27,630 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_test_optimized_20251217_140024.png
+2025-12-17 14:01:28,239 - ETFBacktestManager - INFO - ETF回测管理器初始化完成，数据目录: download, 结果目录: results, 图表目录: plots
+2025-12-17 14:01:28,239 - ETFBacktestManager - INFO - 开始加载ETF数据...
+2025-12-17 14:01:28,240 - ETFBacktestManager - INFO - 自动检测到 1318 个ETF文件
+2025-12-17 14:01:34,753 - ETFBacktestManager - INFO - 成功加载 1318/1318 个ETF数据
+2025-12-17 14:01:34,754 - ETFBacktestManager - INFO - 可用ETF: ['159001_货币ETF', '159003_招商快线ETF', '159005_汇添富快钱ETF', '159100_巴西ETF', '159101_港股通科技ETF基金', '159102_港股通生物科技ETF', '159103_金融科技ETF汇添富', '159105_恒生生物科技ETF易方达', '159106_民企300ETF', '159107_创业板软件ETF富国']...
+2025-12-17 14:01:34,754 - ETFBacktestManager - INFO - 选择ETF 159001_货币ETF 进行回测
+2025-12-17 14:01:34,755 - ETFBacktestManager - INFO - ETF 159001_货币ETF 数据集拆分完成:
+2025-12-17 14:01:34,755 - ETFBacktestManager - INFO -   - 训练集: 1629 条, 2014-10-20 至 2021-06-25
+2025-12-17 14:01:34,756 - ETFBacktestManager - INFO -   - 验证集: 543 条, 2021-06-28 至 2023-09-15
+2025-12-17 14:01:34,756 - ETFBacktestManager - INFO -   - 测试集: 544 条, 2023-09-18 至 2025-12-17
+2025-12-17 14:01:34,756 - ETFBacktestManager - INFO - 开始测试集回测 for 159001_货币ETF
+2025-12-17 14:01:34,756 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:34,757 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 5, 'ma_long': 20, 'rsi_period': 14, 'rsi_overbought': 70, 'rsi_oversold': 30, 'stop_loss_pct': 0.02, 'take_profit_pct': 0.05}
+2025-12-17 14:01:34,757 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:34,949 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 5, MA Long 20, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:01:34,950 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:34,952 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140134.json
+2025-12-17 14:01:40,812 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_test_20251217_140134.png
+2025-12-17 14:01:40,813 - ETFBacktestManager - INFO - 开始参数优化 for 159001_货币ETF，使用验证集
+2025-12-17 14:01:40,814 - ETFBacktestManager - INFO - 开始参数优化 for ETF 159001_货币ETF...
+2025-12-17 14:01:40,814 - ETFBacktestManager - INFO - 参数范围: {'ma_short': [3, 5, 8], 'ma_long': [15, 20, 25], 'rsi_overbought': [65, 70, 75], 'rsi_oversold': [25, 30, 35]}
+2025-12-17 14:01:40,814 - ETFBacktestManager - INFO - 参数组合数量 (81) 超过 max_evals (10)，将只评估前 10 个组合
+2025-12-17 14:01:40,815 - ETFBacktestManager - INFO - 评估参数组合 1/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:01:40,815 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:40,815 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:01:40,816 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:41,043 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:01:41,044 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:41,045 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140141.json
+2025-12-17 14:01:41,046 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:41,046 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:41,047 - ETFBacktestManager - INFO - 评估参数组合 2/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 30}
+2025-12-17 14:01:41,047 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:41,047 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 30}
+2025-12-17 14:01:41,048 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:41,252 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:01:41,253 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:41,255 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140141.json
+2025-12-17 14:01:41,255 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:41,255 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:41,256 - ETFBacktestManager - INFO - 评估参数组合 3/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 35}
+2025-12-17 14:01:41,256 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:41,257 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 35}
+2025-12-17 14:01:41,258 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:41,484 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 35) Ending Value 100000.00
+2025-12-17 14:01:41,485 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:41,486 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140141.json
+2025-12-17 14:01:41,486 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:41,486 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:41,487 - ETFBacktestManager - INFO - 评估参数组合 4/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 25}
+2025-12-17 14:01:41,487 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:41,487 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 25}
+2025-12-17 14:01:41,488 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:41,648 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:01:41,648 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:41,650 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140141.json
+2025-12-17 14:01:41,651 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:41,651 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:41,651 - ETFBacktestManager - INFO - 评估参数组合 5/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 30}
+2025-12-17 14:01:41,651 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:41,652 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 30}
+2025-12-17 14:01:41,652 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:41,854 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:01:41,855 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:41,856 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140141.json
+2025-12-17 14:01:41,857 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:41,857 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:41,857 - ETFBacktestManager - INFO - 评估参数组合 6/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 35}
+2025-12-17 14:01:41,857 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:41,858 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 70, 'rsi_oversold': 35}
+2025-12-17 14:01:41,858 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:42,045 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 70, RSI OS 35) Ending Value 100000.00
+2025-12-17 14:01:42,046 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:42,047 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140142.json
+2025-12-17 14:01:42,048 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:42,048 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:42,048 - ETFBacktestManager - INFO - 评估参数组合 7/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 25}
+2025-12-17 14:01:42,049 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:42,049 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 25}
+2025-12-17 14:01:42,049 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:42,227 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:01:42,228 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:42,229 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140142.json
+2025-12-17 14:01:42,229 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:42,229 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:42,230 - ETFBacktestManager - INFO - 评估参数组合 8/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 30}
+2025-12-17 14:01:42,230 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:42,231 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 30}
+2025-12-17 14:01:42,231 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:42,434 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:01:42,435 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:42,436 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140142.json
+2025-12-17 14:01:42,436 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:42,436 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:42,436 - ETFBacktestManager - INFO - 评估参数组合 9/10: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 35}
+2025-12-17 14:01:42,437 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:42,437 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 75, 'rsi_oversold': 35}
+2025-12-17 14:01:42,438 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:42,676 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 15, RSI OB 75, RSI OS 35) Ending Value 100000.00
+2025-12-17 14:01:42,677 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:42,678 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140142.json
+2025-12-17 14:01:42,679 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:42,680 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:42,680 - ETFBacktestManager - INFO - 评估参数组合 10/10: {'ma_short': 3, 'ma_long': 20, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:01:42,681 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:42,681 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 20, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:01:42,683 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:42,902 - ETFBacktestManager - INFO - 2023-09-15, (MA Short 3, MA Long 20, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:01:42,903 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:42,906 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_20251217_140142.json
+2025-12-17 14:01:42,907 - ETFBacktestManager - WARNING - 指标 sharpe 无效 (值: None)，使用默认低分
+2025-12-17 14:01:42,907 - ETFBacktestManager - INFO - 参数组合评估完成，sharpe: -1000000000.0000, 当前最佳: -1000000000.0000
+2025-12-17 14:01:42,914 - ETFBacktestManager - INFO - 参数优化结果已保存至: results\optimization_159001_货币ETF_20251217_140142.json
+2025-12-17 14:01:42,915 - ETFBacktestManager - INFO - 最佳参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}, sharpe: -1000000000.0000
+2025-12-17 14:01:42,915 - ETFBacktestManager - INFO - 使用最佳参数在测试集上运行: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:01:42,916 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:01:42,916 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 3, 'ma_long': 15, 'rsi_overbought': 65, 'rsi_oversold': 25}
+2025-12-17 14:01:42,917 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:01:43,125 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 3, MA Long 15, RSI OB 65, RSI OS 25) Ending Value 100000.00
+2025-12-17 14:01:43,126 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:01:43,128 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_test_optimized_20251217_140143.json
+2025-12-17 14:01:48,012 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_test_optimized_20251217_140143.png
+2025-12-17 14:02:24,299 - ETFBacktestManager - INFO - ETF回测管理器初始化完成，数据目录: download, 结果目录: results, 图表目录: plots
+2025-12-17 14:02:24,300 - ETFBacktestManager - INFO - 开始加载ETF数据...
+2025-12-17 14:02:24,301 - ETFBacktestManager - INFO - 自动检测到 1318 个ETF文件
+2025-12-17 14:02:31,648 - ETFBacktestManager - INFO - 成功加载 1318/1318 个ETF数据
+2025-12-17 14:02:31,648 - ETFBacktestManager - INFO - 可用ETF: ['159001_货币ETF', '159003_招商快线ETF', '159005_汇添富快钱ETF', '159100_巴西ETF', '159101_港股通科技ETF基金', '159102_港股通生物科技ETF', '159103_金融科技ETF汇添富', '159105_恒生生物科技ETF易方达', '159106_民企300ETF', '159107_创业板软件ETF富国']...
+2025-12-17 14:02:31,648 - ETFBacktestManager - INFO - 选择ETF 159001_货币ETF 进行回测
+2025-12-17 14:02:31,648 - ETFBacktestManager - INFO - 开始回测 for 159001_货币ETF
+2025-12-17 14:02:31,649 - ETFBacktestManager - INFO - 策略设置为: BasicETFStrategy
+2025-12-17 14:02:31,649 - ETFBacktestManager - INFO - 策略参数: {'ma_short': 5, 'ma_long': 20, 'rsi_period': 14, 'rsi_overbought': 70, 'rsi_oversold': 30, 'stop_loss_pct': 0.02, 'take_profit_pct': 0.05}
+2025-12-17 14:02:31,649 - ETFBacktestManager - INFO - 开始回测 ETF 159001_货币ETF...
+2025-12-17 14:02:32,455 - ETFBacktestManager - INFO - 2025-12-17, (MA Short 5, MA Long 20, RSI OB 70, RSI OS 30) Ending Value 100000.00
+2025-12-17 14:02:32,456 - ETFBacktestManager - INFO - 回测完成，最终资金: 100,000.00, 收益率: 0.00%
+2025-12-17 14:02:32,457 - ETFBacktestManager - INFO - 回测结果已保存至: results\backtest_159001_货币ETF_full_20251217_140232.json
+2025-12-17 14:02:40,852 - ETFBacktestManager - INFO - 回测图表已保存至: plots\backtest_plot_159001_货币ETF_full_20251217_140232.png
+2025-12-17 14:02:40,852 - ETFBacktestManager - INFO - 回测完成！

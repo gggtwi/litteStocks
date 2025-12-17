@@ -1,0 +1,34 @@
+2025-12-17 09:41:30,719 - ETFDataDownloader - INFO - ETF数据下载工具初始化完成
+2025-12-17 09:41:30,719 - ETFDataDownloader - INFO - 下载目录: D:\stocks\download
+2025-12-17 09:41:30,719 - ETFDataDownloader - INFO - 已下载ETF数量: 0
+2025-12-17 09:41:30,719 - ETFDataDownloader - INFO - 失败ETF数量: 0
+2025-12-17 09:41:30,721 - ETFDataDownloader - INFO - 自动同步 1318 个新发现的ETF文件到进度记录
+2025-12-17 09:41:30,726 - ETFDataDownloader - INFO - 发现 1318 个已有ETF数据，自动切换到增量更新模式
+2025-12-17 09:41:40,076 - ETFDataDownloader - INFO - 成功获取 1318 只ETF基础信息
+2025-12-17 09:41:40,076 - ETFDataDownloader - INFO - 需要更新 1318 只ETF
+2025-12-17 09:41:40,077 - ETFDataDownloader - INFO - [1/1318] 开始更新: 159001(货币ETF)
+2025-12-17 09:41:40,084 - ETFDataDownloader - INFO - ETF 159001(货币ETF) 已是最新数据，无需更新
+2025-12-17 09:41:41,087 - ETFDataDownloader - INFO - [2/1318] 开始更新: 159003(招商快线ETF)
+2025-12-17 09:41:41,093 - ETFDataDownloader - INFO - ETF 159003(招商快线ETF) 已是最新数据，无需更新
+2025-12-17 09:41:42,096 - ETFDataDownloader - INFO - [3/1318] 开始更新: 159005(汇添富快钱ETF)
+2025-12-17 09:41:42,102 - ETFDataDownloader - INFO - ETF 159005(汇添富快钱ETF) 已是最新数据，无需更新
+2025-12-17 09:41:43,105 - ETFDataDownloader - INFO - [4/1318] 开始更新: 159100(巴西ETF)
+2025-12-17 09:41:43,107 - ETFDataDownloader - INFO - ETF 159100(巴西ETF) 已是最新数据，无需更新
+2025-12-17 09:41:44,110 - ETFDataDownloader - INFO - [5/1318] 开始更新: 159101(港股通科技ETF基金)
+2025-12-17 09:41:44,112 - ETFDataDownloader - INFO - ETF 159101(港股通科技ETF基金) 已是最新数据，无需更新
+2025-12-17 09:41:45,115 - ETFDataDownloader - INFO - [6/1318] 开始更新: 159102(港股通生物科技ETF)
+2025-12-17 09:41:45,117 - ETFDataDownloader - INFO - ETF 159102(港股通生物科技ETF) 已是最新数据，无需更新
+2025-12-17 09:41:46,120 - ETFDataDownloader - INFO - [7/1318] 开始更新: 159103(金融科技ETF汇添富)
+2025-12-17 09:41:46,122 - ETFDataDownloader - INFO - ETF 159103(金融科技ETF汇添富) 已是最新数据，无需更新
+2025-12-17 09:41:47,124 - ETFDataDownloader - INFO - [8/1318] 开始更新: 159105(恒生生物科技ETF易方达)
+2025-12-17 09:41:47,126 - ETFDataDownloader - INFO - ETF 159105(恒生生物科技ETF易方达) 已是最新数据，无需更新
+2025-12-17 09:41:48,129 - ETFDataDownloader - INFO - [9/1318] 开始更新: 159106(民企300ETF)
+2025-12-17 09:41:48,131 - ETFDataDownloader - INFO - ETF 159106(民企300ETF) 已是最新数据，无需更新
+2025-12-17 09:41:49,134 - ETFDataDownloader - INFO - [10/1318] 开始更新: 159107(创业板软件ETF富国)
+2025-12-17 09:41:49,137 - ETFDataDownloader - INFO - ETF 159107(创业板软件ETF富国) 已是最新数据，无需更新
+2025-12-17 09:41:50,140 - ETFDataDownloader - INFO - [11/1318] 开始更新: 159108(工业软件ETF)
+2025-12-17 09:41:50,142 - ETFDataDownloader - INFO - ETF 159108(工业软件ETF) 已是最新数据，无需更新
+2025-12-17 09:41:51,145 - ETFDataDownloader - INFO - [12/1318] 开始更新: 159109(恒生50ETF)
+2025-12-17 09:41:51,147 - ETFDataDownloader - INFO - ETF 159109(恒生50ETF) 已是最新数据，无需更新
+2025-12-17 09:41:52,151 - ETFDataDownloader - INFO - [13/1318] 开始更新: 159117(港股通红利低波ETF)
+2025-12-17 09:41:52,153 - ETFDataDownloader - INFO - ETF 159117(港股通红利低波ETF) 已是最新数据，无需更新

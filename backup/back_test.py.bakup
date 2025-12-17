@@ -1,0 +1,854 @@
+# back_test.py
+import os
+import sys
+import json
+import logging
+import matplotlib.pyplot as plt
+import pandas as pd
+import glob
+import re
+from datetime import datetime
+
+# 添加项目目录到Python路径
+sys.path.append(os.path.join(os.path.dirname(__file__), "litteStocks"))
+
+from litteStocks.etf_data_manager import ETFDataDownloader
+from litteStocks.back_trade import ETFBacktestManager
+from strategy import ActiveTradingStrategy
+
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("backtest.log"), logging.StreamHandler()],
+)
+logger = logging.getLogger("ETFBacktest")
+
+
+def setup_environment():
+    """设置必要的目录结构"""
+    directories = ["download", "results", "plots"]
+    for directory in directories:
+        os.makedirs(directory, exist_ok=True)
+        logger.info(f"已创建/确认目录: {directory}")
+
+
+def update_etf_data(symbols=None):
+    """更新ETF数据"""
+    logger.info("开始更新ETF数据...")
+    downloader = ETFDataDownloader(
+        download_dir="download",
+        progress_file="download/etf_download_progress.json",
+        log_level=logging.INFO,
+    )
+
+    # 运行更新 (增量更新模式)
+    result = downloader.run(mode="update", symbols=symbols)
+
+    logger.info(
+        f"数据更新完成: 成功 {result['success_count']} 个, 失败 {result['fail_count']} 个"
+    )
+    return result
+
+
+def parse_etf_filename(filename):
+    """
+    从文件名中提取ETF代码和名称
+    格式: {code}_{name}.csv
+    示例: 159001_货币ETF.csv -> ('159001', '货币ETF')
+    """
+    if not filename.endswith(".csv"):
+        return None, None
+
+    base_name = filename[:-4]  # 移除.csv后缀
+
+    # 查找第一个下划线
+    underscore_pos = base_name.find("_")
+    if underscore_pos == -1:
+        return None, None
+
+    etf_code = base_name[:underscore_pos]
+    etf_name = base_name[underscore_pos + 1 :]
+
+    return etf_code, etf_name
+
+
+def get_available_etfs(download_dir="download"):
+    """
+    获取下载目录中可用的ETF列表，排除货币ETF
+    返回格式: [(code, name), ...]
+    """
+    logger.info(f"扫描目录 {download_dir} 中的可用ETF数据文件...")
+
+    # 获取所有CSV文件
+    csv_files = glob.glob(os.path.join(download_dir, "*.csv"))
+    logger.info(f"发现 {len(csv_files)} 个CSV文件")
+
+    etf_list = []
+    for file_path in csv_files:
+        filename = os.path.basename(file_path)
+        etf_code, etf_name = parse_etf_filename(filename)
+
+        if etf_code and etf_name:
+            # 排除货币ETF，通常名称包含"货币"或价格接近100
+            if "货币" in etf_name or "现期" in etf_name or "保证金" in etf_name:
+                continue
+
+            # 只保留6位数字代码的ETF
+            if etf_code.isdigit() and len(etf_code) == 6:
+                etf_list.append((etf_code, etf_name))
+
+    logger.info(
+        f"找到 {len(etf_list)} 个非货币ETF: {[(code, name) for code, name in etf_list[:5]]}{'...' if len(etf_list) > 5 else ''}"
+    )
+    return etf_list
+
+
+def inspect_etf_data(file_path):
+    """检查ETF数据质量和适用性"""
+    try:
+        # 读取数据
+        df = pd.read_csv(file_path)
+
+        # 检查是否有足够的数据
+        if len(df) < 50:
+            logger.warning(f"ETF数据量不足: {len(df)} 行")
+            return False, None
+
+        # 检查价格范围
+        close_prices = pd.to_numeric(df["收盘"], errors="coerce")
+        price_range = close_prices.max() - close_prices.min()
+        avg_price = close_prices.mean()
+
+        # 货币ETF通常价格在100附近，波动极小
+        if avg_price > 99 and avg_price < 101 and price_range < 1:
+            logger.warning(
+                f"检测到可能是货币ETF，价格范围: {close_prices.min():.3f} - {close_prices.max():.3f}"
+            )
+            return False, None
+
+        # 检查价格波动性
+        if price_range / avg_price < 0.05:  # 5%的总波动
+            logger.warning(
+                f"ETF价格波动太小: {price_range/avg_price*100:.2f}%，可能不适合交易"
+            )
+            return False, None
+
+        logger.info(
+            f"ETF数据质量良好，价格范围: {close_prices.min():.2f} - {close_prices.max():.2f}，波动率: {price_range/avg_price*100:.2f}%"
+        )
+        return True, df
+
+    except Exception as e:
+        logger.error(f"检查ETF数据时出错: {str(e)}")
+        return False, None
+
+
+def run_backtest_for_etf(symbol, etf_name, strategy_params=None):
+    """为指定ETF运行回测"""
+    logger.info(f"开始为ETF {symbol}({etf_name}) 运行回测...")
+
+    # 直接加载这个ETF的数据
+    file_path = os.path.join("download", f"{symbol}_{etf_name}.csv")
+    logger.info(f"加载数据文件: {file_path}")
+
+    if not os.path.exists(file_path):
+        logger.error(f"ETF数据文件不存在: {file_path}")
+        return None
+
+    # 检查数据质量
+    is_suitable, etf_data = inspect_etf_data(file_path)
+    if not is_suitable:
+        logger.error(f"ETF {symbol}({etf_name}) 数据不适合回测")
+        return None
+
+    # 初始化回测管理器
+    manager = ETFBacktestManager(
+        data_dir="download", results_dir="results", plots_dir="plots"
+    )
+
+    # 分割数据 (70%训练, 30%测试)
+    # 由于我们直接加载了数据，需要调整manager的使用方式
+    # 创建一个临时的DataFrame字典
+    manager.etf_data = {symbol: etf_data}
+
+    train_data, _, test_data = manager.split_data(
+        symbol, train_ratio=0.7, val_ratio=0.0
+    )
+
+    if test_data is None or len(test_data) < 30:
+        logger.error(
+            f"ETF {symbol} 测试数据不足，无法进行回测: {len(test_data) if test_data is not None else 0} 条记录"
+        )
+        return None
+
+    # 确保索引是日期类型
+    if not isinstance(test_data.index, pd.DatetimeIndex):
+        logger.info("重置索引并转换为日期时间索引")
+        test_data = test_data.reset_index()
+        if "日期" in test_data.columns:
+            test_data["日期"] = pd.to_datetime(test_data["日期"])
+            test_data.set_index("日期", inplace=True)
+        elif "date" in test_data.columns:
+            test_data["date"] = pd.to_datetime(test_data["date"])
+            test_data.set_index("date", inplace=True)
+        else:
+            logger.warning("未找到日期列，使用行号作为索引")
+
+    logger.info(f"数据日期范围: {test_data.index.min()} 至 {test_data.index.max()}")
+    logger.info(f"测试数据样本数: {len(test_data)}")
+
+    # 运行回测
+    result = manager.run_backtest(
+        symbol=symbol,
+        data=test_data,
+        strategy_class=ActiveTradingStrategy,
+        strategy_params=strategy_params
+        or {
+            "ma_period": 3,
+            "rsi_period": 6,
+            "rsi_oversold": 40,
+            "rsi_overbought": 60,
+            "volatility_factor": 0.5,
+            "random_trade_prob": 0.1,
+            "trade_size": 0.5,
+            "printlog": True,
+        },
+        start_cash=100000.0,
+        commission=0.001,
+        plot=True,
+        dataset_type="test",
+    )
+
+    return result
+
+
+def analyze_results(results):
+    """分析回测结果，兼容多种返回类型"""
+    if results is None:
+        logger.error("回测结果为空，无法分析")
+        return
+
+    logger.info("\n===== 回测结果分析 =====")
+
+    # 检查结果类型
+    logger.info(f"回测结果类型: {type(results)}")
+
+    # 情况1: 结果是列表 - 标准 backtrader 返回格式
+    if isinstance(results, list) and len(results) > 0:
+        logger.info("检测到标准列表格式的回测结果")
+        strategy = results[0]
+        analyze_strategy_results(strategy)
+
+    # 情况2: 结果是字典 - 可能是自定义返回格式
+    elif isinstance(results, dict):
+        logger.info("检测到字典格式的回测结果")
+        # 尝试获取策略对象
+        if "strategy" in results:
+            strategy = results["strategy"]
+            analyze_strategy_results(strategy)
+        elif "results" in results:
+            if isinstance(results["results"], list) and len(results["results"]) > 0:
+                strategy = results["results"][0]
+                analyze_strategy_results(strategy)
+            else:
+                logger.warning("字典中的 'results' 不是有效的策略列表")
+                print_generic_results(results)
+        else:
+            logger.warning("无法从字典中识别策略对象")
+            print_generic_results(results)
+
+    # 情况3: 结果是单个策略对象
+    elif hasattr(results, "analyzers"):
+        logger.info("检测到单个策略对象")
+        analyze_strategy_results(results)
+
+    # 情况4: 其他不支持的类型
+    else:
+        logger.warning(f"不支持的回测结果类型: {type(results)}")
+        print_generic_results(results)
+
+    logger.info("\n===== 分析完成 =====")
+
+
+def analyze_strategy_results(strategy):
+    """分析单个策略的结果"""
+    logger.info("\n【策略基本信息】")
+
+    # 获取最终价值
+    try:
+        broker = strategy.broker if hasattr(strategy, "broker") else strategy.env.broker
+        final_value = broker.getvalue()
+        logger.info(f"最终资产价值: {final_value:,.2f}")
+    except Exception as e:
+        logger.error(f"获取最终价值失败: {str(e)}")
+
+    # 获取分析器结果
+    logger.info("\n【分析器结果】")
+    try:
+        # 检查是否有 analyzers 属性
+        if hasattr(strategy, "analyzers"):
+            analyzers = strategy.analyzers
+            if hasattr(analyzers, "getnames") and callable(analyzers.getnames):
+                analyzer_names = analyzers.getnames()
+                logger.info(f"可用分析器: {', '.join(analyzer_names)}")
+
+                # 遍历所有分析器
+                for name in analyzer_names:
+                    try:
+                        analyzer = analyzers.getbyname(name)
+                        analysis = analyzer.get_analysis()
+                        logger.info(f"\n--- {name} 分析器 ---")
+                        print_analysis_recursive(analysis, 2)
+                    except Exception as e:
+                        logger.error(f"处理分析器 {name} 时出错: {str(e)}")
+            else:
+                logger.warning("无法获取分析器列表")
+                # 尝试直接访问常见分析器
+                common_analyzers = [
+                    "sharpe",
+                    "drawdown",
+                    "returns",
+                    "tradeanalyzer",
+                    "sqn",
+                ]
+                for name in common_analyzers:
+                    if hasattr(analyzers, name):
+                        try:
+                            analyzer = getattr(analyzers, name)
+                            analysis = analyzer.get_analysis()
+                            logger.info(f"\n--- {name} 分析器 ---")
+                            print_analysis_recursive(analysis, 2)
+                        except Exception as e:
+                            logger.warning(f"分析器 {name} 不可用: {str(e)}")
+        else:
+            logger.warning("策略对象没有 analyzers 属性")
+    except Exception as e:
+        logger.error(f"获取分析器结果失败: {str(e)}")
+
+    # 交易统计
+    logger.info("\n【交易统计】")
+    try:
+        # 尝试获取交易分析器
+        if hasattr(strategy, "analyzers") and hasattr(
+            strategy.analyzers, "tradeanalyzer"
+        ):
+            trade_analysis = strategy.analyzers.tradeanalyzer.get_analysis()
+            if trade_analysis:
+                total_trades = trade_analysis.total.total
+                won_trades = trade_analysis.won.total
+                lost_trades = trade_analysis.lost.total
+                win_rate = won_trades / total_trades if total_trades > 0 else 0
+
+                logger.info(f"总交易次数: {total_trades}")
+                logger.info(f"盈利交易: {won_trades}")
+                logger.info(f"亏损交易: {lost_trades}")
+                logger.info(f"胜率: {win_rate*100:.2f}%")
+
+                # 平均盈亏
+                if won_trades > 0:
+                    avg_profit = trade_analysis.won.pnl.average
+                    logger.info(f"平均盈利: {avg_profit:.2f}")
+                if lost_trades > 0:
+                    avg_loss = trade_analysis.lost.pnl.average
+                    logger.info(f"平均亏损: {abs(avg_loss):.2f}")
+                if won_trades > 0 and lost_trades > 0:
+                    profit_factor = (
+                        abs(
+                            trade_analysis.won.pnl.total / trade_analysis.lost.pnl.total
+                        )
+                        if trade_analysis.lost.pnl.total != 0
+                        else float("inf")
+                    )
+                    logger.info(f"盈利因子: {profit_factor:.2f}")
+        else:
+            logger.warning("没有可用的交易分析器")
+    except Exception as e:
+        logger.error(f"获取交易统计失败: {str(e)}")
+
+    # 最大回撤
+    logger.info("\n【风险指标】")
+    try:
+        if hasattr(strategy, "analyzers") and hasattr(strategy.analyzers, "drawdown"):
+            dd_analysis = strategy.analyzers.drawdown.get_analysis()
+            max_dd = (
+                dd_analysis.max.drawdown
+                if hasattr(dd_analysis, "max") and hasattr(dd_analysis.max, "drawdown")
+                else 0
+            )
+            max_dd_duration = (
+                dd_analysis.max.len
+                if hasattr(dd_analysis, "max") and hasattr(dd_analysis.max, "len")
+                else 0
+            )
+
+            logger.info(f"最大回撤: {max_dd:.2f}%")
+            logger.info(f"最大回撤持续时间: {max_dd_duration} 天")
+    except Exception as e:
+        logger.error(f"获取最大回撤信息失败: {str(e)}")
+
+
+def print_generic_results(results):
+    """打印通用结果，适用于非标准策略对象"""
+    logger.info("\n【通用结果分析】")
+
+    if isinstance(results, dict):
+        for key, value in results.items():
+            if isinstance(value, (int, float)):
+                logger.info(f"{key}: {value}")
+            elif isinstance(value, (str, bool)):
+                logger.info(f"{key}: {value}")
+            else:
+                logger.info(f"{key}: {type(value)} (不支持详细分析)")
+
+    elif hasattr(results, "__dict__"):
+        for key, value in results.__dict__.items():
+            if not key.startswith("_"):
+                if isinstance(value, (int, float)):
+                    logger.info(f"{key}: {value}")
+                else:
+                    logger.info(f"{key}: {type(value)}")
+
+    else:
+        logger.info(f"结果内容: {str(results)[:200]}...")  # 只显示前200个字符
+
+
+def print_analysis_recursive(analysis, indent_level=0):
+    """递归打印分析结果，处理嵌套结构"""
+    indent = "  " * indent_level
+
+    # 如果是字典或类似字典的结构
+    if hasattr(analysis, "items"):
+        for key, value in analysis.items():
+            if hasattr(value, "items") or hasattr(value, "__dict__"):  # 嵌套结构
+                logger.info(f"{indent}{key}:")
+                print_analysis_recursive(value, indent_level + 1)
+            else:  # 简单值
+                formatted_value = format_analysis_value(key, value)
+                logger.info(f"{indent}{key}: {formatted_value}")
+
+    # 如果是列表
+    elif isinstance(analysis, (list, tuple)):
+        for i, item in enumerate(analysis):
+            if hasattr(item, "items") or hasattr(item, "__dict__"):  # 嵌套结构
+                logger.info(f"{indent}[{i}]:")
+                print_analysis_recursive(item, indent_level + 1)
+            else:  # 简单值
+                formatted_value = format_analysis_value(f"item_{i}", item)
+                logger.info(f"{indent}[{i}]: {formatted_value}")
+
+    # 如果是对象
+    elif hasattr(analysis, "__dict__"):
+        for key, value in analysis.__dict__.items():
+            if not key.startswith("_"):  # 忽略私有属性
+                if hasattr(value, "items") or hasattr(value, "__dict__"):  # 嵌套结构
+                    logger.info(f"{indent}{key}:")
+                    print_analysis_recursive(value, indent_level + 1)
+                else:  # 简单值
+                    formatted_value = format_analysis_value(key, value)
+                    logger.info(f"{indent}{key}: {formatted_value}")
+
+    # 简单值
+    else:
+        formatted_value = format_analysis_value("value", analysis)
+        logger.info(f"{indent}{formatted_value}")
+
+
+def format_analysis_value(key, value):
+    """根据键和值的类型，格式化输出"""
+    # 特殊处理百分比
+    percentage_keys = [
+        "return",
+        "pnl",
+        "sharpe",
+        "winrate",
+        "rate",
+        "ratio",
+        "drawdown",
+    ]
+    if any(pkey in str(key).lower() for pkey in percentage_keys):
+        try:
+            numeric_value = float(value)
+            if -1 <= numeric_value <= 1:  # 假设是小数形式的百分比
+                return f"{numeric_value*100:.2f}%"
+            return f"{numeric_value:.2f}%"
+        except (TypeError, ValueError):
+            pass
+
+    # 特殊处理货币值
+    currency_keys = ["value", "cash", "cost", "price", "equity"]
+    if any(ckey in str(key).lower() for ckey in currency_keys):
+        try:
+            numeric_value = float(value)
+            return f"{numeric_value:,.2f}"
+        except (TypeError, ValueError):
+            pass
+
+    # 尝试转换为数值
+    try:
+        numeric_value = float(value)
+        if numeric_value.is_integer():
+            return f"{int(numeric_value)}"
+        return f"{numeric_value:.4f}"
+    except (TypeError, ValueError):
+        # 无法转换为数值，返回原始值
+        return str(value)
+
+
+def run_backtest_for_etf(symbol, etf_name, strategy_params=None):
+    """为指定ETF运行回测"""
+    logger.info(f"开始为ETF {symbol}({etf_name}) 运行回测...")
+
+    # 直接加载这个ETF的数据
+    file_path = os.path.join("download", f"{symbol}_{etf_name}.csv")
+    logger.info(f"加载数据文件: {file_path}")
+
+    if not os.path.exists(file_path):
+        logger.error(f"ETF数据文件不存在: {file_path}")
+        return None
+
+    # 读取数据
+    try:
+        etf_data = pd.read_csv(file_path)
+        logger.info(f"原始数据形状: {etf_data.shape}")
+        logger.info(f"原始列名: {etf_data.columns.tolist()}")
+    except Exception as e:
+        logger.error(f"读取CSV文件失败: {str(e)}")
+        return None
+
+    # 检查数据质量
+    is_suitable, _ = inspect_etf_data(file_path)
+    if not is_suitable:
+        logger.error(f"ETF {symbol}({etf_name}) 数据不适合回测")
+        return None
+
+    # 确保索引是日期类型
+    etf_data = ensure_datetime_index(etf_data.copy())
+
+    # 映射列名为英文
+    etf_data = map_chinese_columns_to_english(etf_data)
+
+    # 验证索引是否为DatetimeIndex
+    if not isinstance(etf_data.index, pd.DatetimeIndex):
+        logger.error("无法将数据索引转换为日期类型，无法进行回测")
+        return None
+
+    logger.info(
+        f"数据索引类型: {type(etf_data.index)}, 范围: {etf_data.index.min()} 至 {etf_data.index.max()}"
+    )
+
+    # 初始化回测管理器
+    manager = ETFBacktestManager(
+        data_dir="download", results_dir="results", plots_dir="plots"
+    )
+
+    # 直接设置etf_data，避免manager再次加载
+    manager.etf_data = {symbol: etf_data}
+
+    # 分割数据 (70%训练, 30%测试)
+    try:
+        train_data, _, test_data = manager.split_data(
+            symbol, train_ratio=0.7, val_ratio=0.0
+        )
+    except Exception as e:
+        logger.error(f"分割数据时出错: {str(e)}")
+        logger.info("尝试直接使用最后30%的数据作为测试集")
+
+        # 手动分割数据
+        split_idx = int(len(etf_data) * 0.7)
+        train_data = etf_data.iloc[:split_idx]
+        test_data = etf_data.iloc[split_idx:]
+
+        logger.info(
+            f"手动分割完成 - 训练集: {len(train_data)} 条, 测试集: {len(test_data)} 条"
+        )
+
+    if test_data is None or len(test_data) < 30:
+        logger.error(
+            f"ETF {symbol} 测试数据不足，无法进行回测: {len(test_data) if test_data is not None else 0} 条记录"
+        )
+        return None
+
+    # 再次确保测试数据索引是日期类型
+    test_data = ensure_datetime_index(test_data.copy())
+
+    # 再次确保列名正确
+    test_data = map_chinese_columns_to_english(test_data.copy())
+
+    logger.info(f"测试数据日期范围: {test_data.index.min()} 至 {test_data.index.max()}")
+    logger.info(f"测试数据样本数: {len(test_data)}")
+
+    # 检查必要列是否存在
+    required_columns = ["open", "high", "low", "close", "volume"]
+    missing_columns = [col for col in required_columns if col not in test_data.columns]
+    if missing_columns:
+        logger.error(f"测试数据缺少必要列: {missing_columns}")
+        return None
+
+    # 运行回测
+    result = manager.run_backtest(
+        symbol=symbol,
+        data=test_data,
+        strategy_class=ActiveTradingStrategy,
+        strategy_params=strategy_params
+        or {
+            "ma_period": 5,
+            "ma_long_period": 20,
+            "rsi_period": 14,
+            "rsi_oversold": 30,
+            "rsi_overbought": 70,
+            "volatility_period": 10,
+            "min_trade_interval": 2,
+            "trade_size": 0.95,
+            "printlog": True,
+        },
+        start_cash=100000.0,
+        commission=0.001,
+        plot=True,
+        dataset_type="test",
+    )
+
+    return result
+
+
+def map_chinese_columns_to_english(df):
+    """
+    将中文列名映射为 backtrader 期望的英文列名
+    原始列名: 日期,开盘,收盘,最高,最低,成交量,成交额,振幅,涨跌幅,涨跌额,换手率
+    """
+    logger.info("映射中文列名为英文列名...")
+    logger.info(f"原始列名: {df.columns.tolist()}")
+
+    column_mapping = {
+        "开盘": "open",
+        "最高": "high",
+        "最低": "low",
+        "收盘": "close",
+        "成交量": "volume",
+        "成交额": "value",  # backtrader 可能不直接使用这个
+        "振幅": "amplitude",
+        "涨跌幅": "pct_change",
+        "涨跌额": "change",
+        "换手率": "turnover",
+    }
+
+    # 创建列名映射字典
+    rename_dict = {}
+    for chinese_name, english_name in column_mapping.items():
+        if chinese_name in df.columns:
+            rename_dict[chinese_name] = english_name
+
+    # 应用列名映射
+    df = df.rename(columns=rename_dict)
+
+    # 确保必要的列存在
+    required_columns = ["open", "high", "low", "close", "volume"]
+    missing_columns = [col for col in required_columns if col not in df.columns]
+
+    if missing_columns:
+        logger.error(f"缺少必要的列: {missing_columns}")
+        logger.info("尝试修复缺失列...")
+
+        # 修复缺失列
+        for col in missing_columns:
+            if col == "volume" and "成交量" in df.columns:
+                df["volume"] = df["成交量"]
+            elif col == "volume" and "成交额" in df.columns:
+                # 用成交额估算成交量（简化处理）
+                if "close" in df.columns:
+                    df["volume"] = df["成交额"] / df["close"]
+                else:
+                    df["volume"] = df["成交额"] / 100  # 粗略估计
+            elif col in ["open", "high", "low", "close"]:
+                # 如果缺少价格列，用收盘价填充
+                if "close" in df.columns:
+                    df[col] = df["close"]
+                elif "收盘" in df.columns:
+                    df[col] = df["收盘"]
+            else:
+                # 其他情况，填充0
+                df[col] = 0
+
+    # 转换数据类型
+    for col in ["open", "high", "low", "close"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    if "volume" in df.columns:
+        df["volume"] = (
+            pd.to_numeric(df["volume"], errors="coerce").fillna(0).astype(int)
+        )
+
+    # 确保没有缺失值
+    for col in required_columns:
+        if df[col].isnull().any():
+            logger.warning(f"列 {col} 包含缺失值，用前向填充")
+            df[col] = df[col].fillna(method="ffill").fillna(method="bfill")
+
+    logger.info(f"映射后的列名: {df.columns.tolist()}")
+    logger.info("列名映射完成")
+
+    return df
+
+
+def ensure_datetime_index(df):
+    """
+    确保DataFrame有datetime类型的索引
+    尝试多种可能的日期列名
+    """
+    logger.info("确保DataFrame有datetime类型的索引...")
+
+    # 检查当前索引是否已经是datetime类型
+    if isinstance(df.index, pd.DatetimeIndex):
+        logger.info("索引已经是DatetimeIndex类型")
+        return df
+
+    # 重置索引，将原索引变为列
+    df = df.reset_index()
+
+    # 可能的日期列名
+    date_columns = ["日期", "date", "time", "datetime", "timestamp"]
+
+    # 查找日期列
+    date_col = None
+    for col in date_columns:
+        if col in df.columns:
+            date_col = col
+            break
+
+    # 如果没有找到明确的日期列，尝试查找包含"日期"或"date"的列
+    if date_col is None:
+        for col in df.columns:
+            if isinstance(col, str) and ("日期" in col or "date" in col.lower()):
+                date_col = col
+                break
+
+    # 如果找到日期列，转换为datetime并设置为索引
+    if date_col is not None:
+        try:
+            logger.info(f"找到日期列: {date_col}, 转换为datetime索引")
+            # 处理可能的字符串日期
+            if df[date_col].dtype == "object":
+                # 尝试多种日期格式
+                for date_format in [None, "%Y-%m-%d", "%Y/%m/%d", "%Y年%m月%d日"]:
+                    try:
+                        df[date_col] = pd.to_datetime(df[date_col], format=date_format)
+                        break
+                    except:
+                        continue
+
+            # 确保是datetime类型
+            df[date_col] = pd.to_datetime(df[date_col])
+
+            # 设置为索引
+            df = df.set_index(date_col)
+
+            # 确保索引是DatetimeIndex
+            if not isinstance(df.index, pd.DatetimeIndex):
+                df.index = pd.DatetimeIndex(df.index)
+
+            # 按日期排序
+            df = df.sort_index()
+
+            logger.info(f"成功设置日期索引，范围: {df.index.min()} 至 {df.index.max()}")
+            return df
+
+        except Exception as e:
+            logger.error(f"转换日期列失败: {str(e)}")
+
+    # 如果没有找到日期列，尝试使用第一列作为日期
+    logger.warning("未找到明确的日期列，尝试使用第一列作为日期")
+    first_col = df.columns[0]
+    try:
+        df[first_col] = pd.to_datetime(df[first_col])
+        df = df.set_index(first_col)
+        logger.info(f"使用第一列 {first_col} 作为日期索引")
+        return df
+    except:
+        logger.warning("无法确定日期列，将使用范围索引")
+        # 作为最后手段，创建一个日期范围索引
+        # 假设数据是日频的
+        start_date = datetime.now() - pd.Timedelta(days=len(df))
+        date_range = pd.date_range(start=start_date, periods=len(df), freq="D")
+        df.index = date_range
+        logger.info(f"创建了新的日期范围索引: {date_range[0]} 至 {date_range[-1]}")
+        return df
+
+
+def main():
+    """主函数"""
+    try:
+        # 设置环境
+        setup_environment()
+
+        # 更新ETF数据 - 选择一些常见的非货币ETF
+        etf_symbols = [
+            "510300",
+            "510500",
+            "512880",
+            "512000",
+            "512400",
+        ]  # 沪深300, 中证500, 证券ETF, 红利ETF, 有色金属ETF
+        update_result = update_etf_data(symbols=etf_symbols)
+
+        # 获取可用的非货币ETF列表
+        available_etfs = get_available_etfs("download")
+
+        if not available_etfs:
+            logger.error("没有找到可用的非货币ETF数据文件")
+
+            # 作为备选，扫描所有文件
+            logger.info("尝试扫描所有CSV文件...")
+            all_files = glob.glob(os.path.join("download", "*.csv"))
+            if all_files:
+                logger.info(f"找到 {len(all_files)} 个CSV文件，选择第一个进行测试")
+                first_file = os.path.basename(all_files[0])
+                etf_code, etf_name = parse_etf_filename(first_file)
+                if etf_code and etf_name:
+                    available_etfs = [(etf_code, etf_name)]
+
+        if not available_etfs:
+            logger.error("仍然没有找到可用的ETF，程序终止")
+            return
+
+        # 优先选择我们尝试下载的ETF
+        selected_etf = None
+        selected_name = None
+
+        for code, name in available_etfs:
+            if code in etf_symbols:
+                selected_etf = code
+                selected_name = name
+                break
+
+        # 如果没有匹配，选择第一个可用的ETF
+        if selected_etf is None:
+            selected_etf, selected_name = available_etfs[0]
+
+        logger.info(f"选择ETF {selected_etf}({selected_name}) 进行回测")
+
+        # 运行回测
+        backtest_result = run_backtest_for_etf(selected_etf, selected_name)
+
+        # 分析结果
+        if backtest_result:
+            analyze_results(backtest_result)
+
+            # 保存完整结果
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            result_file = f"backtest_result_{selected_etf}_{timestamp}.json"
+            with open(result_file, "w", encoding="utf-8") as f:
+                json.dump(backtest_result, f, indent=4, ensure_ascii=False, default=str)
+            logger.info(f"完整回测结果已保存至: {result_file}")
+
+        logger.info("\n回测任务完成!")
+
+    except KeyboardInterrupt:
+        logger.warning("用户中断操作，程序终止")
+    except Exception as e:
+        logger.exception(f"发生错误: {str(e)}")
+        raise  # 重新抛出异常以便调试
+
+
+if __name__ == "__main__":
+    main()

@@ -1,2 +1,5 @@
 download/
 litteStocks/etf_download_progress.json
+litteStocks/__pycache__/
+plots/
+results/

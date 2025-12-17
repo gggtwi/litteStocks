@@ -1,0 +1,179 @@
+# strategy.py
+import backtrader as bt
+import numpy as np
+import random
+
+
+class ActiveTradingStrategy(bt.Strategy):
+    """
+    一定会进行交易的活跃策略
+    这个策略结合了多种信号源，确保在各种市场条件下都会产生交易信号
+    适配A股ETF数据格式
+    """
+
+    params = (
+        ("ma_period", 5),  # 短期移动平均线
+        ("ma_long_period", 20),  # 长期移动平均线
+        ("rsi_period", 14),  # RSI周期
+        ("rsi_oversold", 30),  # 超卖阈值
+        ("rsi_overbought", 70),  # 超买阈值
+        ("volatility_period", 10),  # 波动率计算周期
+        ("min_trade_interval", 2),  # 最小交易间隔(天)
+        ("trade_size", 0.95),  # 每次交易的资金比例
+        ("printlog", True),
+    )
+
+    def __init__(self):
+        # 订单状态跟踪
+        self.order = None
+        self.buyprice = None
+        self.buycomm = None
+
+        # 技术指标
+        self.sma_short = bt.indicators.SimpleMovingAverage(
+            self.data.close, period=self.params.ma_period
+        )
+
+        self.sma_long = bt.indicators.SimpleMovingAverage(
+            self.data.close, period=self.params.ma_long_period
+        )
+
+        self.rsi = bt.indicators.RSI(self.data.close, period=self.params.rsi_period)
+
+        # 价格变动率 (1天)
+        self.price_change = bt.indicators.PercentChange(self.data.close, period=1)
+
+        # 波动率 (ATR)
+        self.atr = bt.indicators.ATR(self.data, period=self.params.volatility_period)
+
+        # 跟踪交易天数
+        self.days_since_last_trade = 0
+        self.last_trade_date = None
+        self.last_trade_type = None  # 'buy' or 'sell'
+
+    def log(self, txt, dt=None, doprint=False):
+        """日志记录功能"""
+        if self.params.printlog or doprint:
+            dt = dt or self.data.datetime.date(0)
+            print(f"{dt.isoformat()}, {txt}")
+
+    def notify_order(self, order):
+        if order.status in [order.Submitted, order.Accepted]:
+            return
+
+        # 检查订单是否已完成
+        if order.status in [order.Completed]:
+            if order.isbuy():
+                self.log(
+                    f"买入执行, 价格: {order.executed.price:.3f}, 数量: {order.executed.size}, 价值: {order.executed.value:.2f}"
+                )
+                self.buyprice = order.executed.price
+                self.buycomm = order.executed.comm
+            elif order.issell():
+                self.log(
+                    f"卖出执行, 价格: {order.executed.price:.3f}, 数量: {order.executed.size}, 价值: {order.executed.value:.2f}, 盈亏: {order.executed.pnl:.2f}"
+                )
+
+            self.last_trade_date = len(self)  # 记录当前bar的索引
+            self.last_trade_type = "buy" if order.isbuy() else "sell"
+
+        elif order.status in [order.Canceled, order.Margin, order.Rejected]:
+            self.log("订单被取消/保证金不足/拒绝")
+
+        self.order = None
+
+    def next(self):
+        # 增加无交易天数计数
+        current_bar = len(self)
+        if self.last_trade_date is not None:
+            self.days_since_last_trade = current_bar - self.last_trade_date
+
+        # 记录当前价格和指标
+        if self.params.printlog:
+            self.log(
+                f"收盘价: {self.data.close[0]:.3f}, 短期均线: {self.sma_short[0]:.3f}, 长期均线: {self.sma_long[0]:.3f}, RSI: {self.rsi[0]:.2f}"
+            )
+
+        # 检查是否有挂单
+        if self.order:
+            return
+
+        # 策略核心：多种交易信号组合，确保一定会交易
+        should_buy = False
+        should_sell = False
+
+        # 信号1: 短期均线上穿长期均线
+        signal1_buy = (
+            self.sma_short[0] > self.sma_long[0]
+            and self.sma_short[-1] <= self.sma_long[-1]
+        )
+        signal1_sell = (
+            self.sma_short[0] < self.sma_long[0]
+            and self.sma_short[-1] >= self.sma_long[-1]
+        )
+
+        # 信号2: RSI超卖/超买
+        signal2_buy = self.rsi[0] < self.params.rsi_oversold
+        signal2_sell = self.rsi[0] > self.params.rsi_overbought
+
+        # 信号3: 价格大幅下跌后反弹
+        signal3_buy = self.price_change[0] > 0.02 and self.price_change[-1] < -0.03
+        signal3_sell = self.price_change[0] < -0.02 and self.price_change[-1] > 0.03
+
+        # 信号4: 连续无交易天数太多，强制交易 (确保一定会交易)
+        signal4_force_trade = self.days_since_last_trade > 10
+
+        # 信号5: 趋势确认
+        signal5_buy = self.data.close[0] > self.sma_long[0] * 1.01
+        signal5_sell = self.data.close[0] < self.sma_long[0] * 0.99
+
+        # 组合信号
+        if not self.position:
+            # 无持仓时考虑买入
+            should_buy = (
+                (signal1_buy and (signal2_buy or signal5_buy))
+                or (signal2_buy and signal5_buy)
+                or signal3_buy
+                or signal4_force_trade
+            )
+        else:
+            # 有持仓时考虑卖出
+            should_sell = (
+                (signal1_sell and (signal2_sell or signal5_sell))
+                or (signal2_sell and signal5_sell)
+                or signal3_sell
+                or signal4_force_trade
+            )
+
+        # 执行交易
+        if not self.position:
+            if should_buy:
+                # 确保不连续买卖相同方向
+                if (
+                    self.last_trade_type == "buy"
+                    and self.days_since_last_trade < self.params.min_trade_interval
+                ):
+                    self.log("跳过买入：距离上次买入太近")
+                    return
+
+                self.log(f"创建买入订单, 价格: {self.data.close[0]:.3f}")
+                size = int(
+                    self.broker.getcash() * self.params.trade_size / self.data.close[0]
+                )
+                if size < 1:
+                    self.log("买入数量小于1，跳过交易")
+                    return
+
+                self.order = self.buy(size=size)
+        else:
+            if should_sell:
+                # 确保不连续买卖相同方向
+                if (
+                    self.last_trade_type == "sell"
+                    and self.days_since_last_trade < self.params.min_trade_interval
+                ):
+                    self.log("跳过卖出：距离上次卖出太近")
+                    return
+
+                self.log(f"创建卖出订单, 价格: {self.data.close[0]:.3f}")
+                self.order = self.sell(size=self.position.size)

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import datetime
 import logging
 import backtrader as bt
-from litteStocks.etf_data import ETFData
+from data_analyzer.etf_data import ETFData
 from strategies.simpleStrategy import SimpleStrategy
 
 plt.rcParams["font.sans-serif"] = ["SimHei"]  # Windows
@@ -25,20 +25,20 @@ cerebro.broker.setcommission(commission=initial_commission)
 
 # 添加数据
 modpath = os.path.dirname(os.path.abspath(sys.argv[0]))
-datapath = os.path.join(modpath, "download")
+datapath = os.path.join(modpath, "download").join("etfs")
 data_ls = os.listdir(datapath)
+data_ls.pop(0)
 
 for f_path in data_ls:
-    if f_path.startswith(aimEtf):
-        dataname = os.path.join(datapath, f_path)
-        data = ETFData(
-            dataname=dataname,
-            timeframe=bt.TimeFrame.Days,
-            fromdate=datetime.datetime(2014, 9, 1),
-            todate=datetime.datetime(2024, 6, 1),
-            encoding="utf-8-sig",
-        )
-        cerebro.adddata(data)
+    dataname = os.path.join(datapath, f_path)
+    data = ETFData(
+        dataname=dataname,
+        timeframe=bt.TimeFrame.Days,
+        fromdate=datetime.datetime(2014, 9, 1),
+        todate=datetime.datetime(2024, 6, 1),
+        encoding="utf-8-sig",
+    )
+    cerebro.adddata(data)
 
 logging.info(f"初始资金: {cerebro.broker.getvalue():.2f} 元")
 logging.info(f"使用策略: SimpleStrategy")

@@ -21,8 +21,8 @@ class ETFDataDownloader:
 
     def __init__(
         self,
-        download_dir: str = "download",
-        progress_file: str = "download/etf_download_progress.json",
+        download_dir: str = "download/etfs/daily/",
+        progress_file: str = "download/etfs/daily/etf_download_progress.json",
         max_retries: int = 3,
         retry_delay: float = 2.0,
         log_level: int = logging.INFO,
@@ -64,14 +64,14 @@ class ETFDataDownloader:
         """将已存在的ETF文件同步到进度记录"""
         existing_files = self.get_existing_etfs()
         newly_added = 0
-        
+
         for symbol in existing_files:
             if symbol not in self.downloaded_etfs:
                 self.downloaded_etfs.add(symbol)
                 if symbol in self.failed_etfs:
                     self.failed_etfs.remove(symbol)
                 newly_added += 1
-        
+
         if newly_added > 0:
             self.logger.info(f"自动同步 {newly_added} 个新发现的ETF文件到进度记录")
             self._save_progress()
@@ -410,7 +410,9 @@ class ETFDataDownloader:
         # 逐个下载
         for i, symbol in enumerate(symbols_to_download, 1):
             name = etf_names.get(symbol, symbol)
-            self.logger.info(f"[{i}/{len(symbols_to_download)}] 开始下载: {symbol}({name})")
+            self.logger.info(
+                f"[{i}/{len(symbols_to_download)}] 开始下载: {symbol}({name})"
+            )
 
             success, _ = self._download_single_etf(symbol, name)
             if success:
@@ -486,7 +488,9 @@ class ETFDataDownloader:
         # 逐个更新
         for i, symbol in enumerate(symbols_to_update, 1):
             name = etf_names.get(symbol, self._get_name_from_filename(symbol))
-            self.logger.info(f"[{i}/{len(symbols_to_update)}] 开始更新: {symbol}({name})")
+            self.logger.info(
+                f"[{i}/{len(symbols_to_update)}] 开始更新: {symbol}({name})"
+            )
 
             success, new_count = self._update_single_etf(symbol, name)
             if success:
@@ -530,7 +534,9 @@ class ETFDataDownloader:
 
     def run(
         self, mode: str = "auto", symbols: Optional[List[str]] = None
-    ) -> Dict[str, Union[int, float, List[str], str]]:  # 修正1: 扩展返回类型包含所有可能的值类型
+    ) -> Dict[
+        str, Union[int, float, List[str], str]
+    ]:  # 修正1: 扩展返回类型包含所有可能的值类型
         """
         执行下载/更新任务
 
@@ -548,7 +554,9 @@ class ETFDataDownloader:
                 self.logger.info("未发现已有数据，自动切换到全量下载模式")
             else:
                 mode = "update"
-                self.logger.info(f"发现 {existing_count} 个已有ETF数据，自动切换到增量更新模式")
+                self.logger.info(
+                    f"发现 {existing_count} 个已有ETF数据，自动切换到增量更新模式"
+                )
 
         if mode == "full":
             return self.download_full_data(symbols)  # type: ignore
@@ -565,10 +573,18 @@ def main():
     from tqdm import tqdm
 
     parser = argparse.ArgumentParser(description="ETF数据下载管理器")
-    parser.add_argument("--update", action="store_true", help="仅更新已有ETF数据（增量更新）")
-    parser.add_argument("--full", action="store_true", help="强制全量下载（忽略已有数据）")
-    parser.add_argument("--symbol", type=str, help="指定下载/更新单个ETF代码，例如: 513500")
-    parser.add_argument("--symbols-file", type=str, help="从文件读取ETF代码列表，每行一个代码")
+    parser.add_argument(
+        "--update", action="store_true", help="仅更新已有ETF数据（增量更新）"
+    )
+    parser.add_argument(
+        "--full", action="store_true", help="强制全量下载（忽略已有数据）"
+    )
+    parser.add_argument(
+        "--symbol", type=str, help="指定下载/更新单个ETF代码，例如: 513500"
+    )
+    parser.add_argument(
+        "--symbols-file", type=str, help="从文件读取ETF代码列表，每行一个代码"
+    )
     parser.add_argument(
         "--log-level",
         type=str,
@@ -604,7 +620,9 @@ def main():
         # 执行任务
         result = downloader.run(mode=mode, symbols=symbols)
         print("\n" + "=" * 60)
-        print(f"任务完成! 成功: {result['success_count']}, 失败: {result['fail_count']}")
+        print(
+            f"任务完成! 成功: {result['success_count']}, 失败: {result['fail_count']}"
+        )
         if "total_new_records" in result:
             print(f"新增数据记录: {result['total_new_records']}")
         print(f"耗时: {result['total_time']:.1f} 秒")
@@ -637,6 +655,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-

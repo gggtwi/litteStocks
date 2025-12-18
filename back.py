@@ -6,7 +6,7 @@ import datetime
 import logging
 import backtrader as bt
 from litteStocks.etf_data import ETFData
-from strategy import SimpleStrategy
+from strategies.simpleStrategy import SimpleStrategy
 
 plt.rcParams["font.sans-serif"] = ["SimHei"]  # Windows
 plt.rcParams["axes.unicode_minus"] = False  # 解决负号显示问题

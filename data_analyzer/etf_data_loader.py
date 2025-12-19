@@ -14,7 +14,6 @@ logging.basicConfig(
 class EefDataLoader:
     def __init__(
         self,
-        cerebro: bt.Cerebro,
         data_source="download/etfs/daily",
         min_days=180,
         start_date="2014-09-01",
@@ -29,7 +28,6 @@ class EefDataLoader:
         self.end_date = end_date
         self.valid_ratio = valid_ratio
         self.test_ratio = test_ratio
-        self.cerebro = cerebro
 
         if self.test_ratio:
             self.test_ratio = valid_ratio
@@ -56,39 +54,50 @@ class EefDataLoader:
         test_start_date = end_dt - datetime.timedelta(days=test_days)
         return test_start_date
 
-    def train_data_load(self):
-        logging.info("Loading train data from source: %s", self.data_source)
+    def data_load(self, cerebro: bt.Cerebro = None, mode="train"):
+        if cerebro is None:
+            cerebro = bt.Cerebro()
+        logging.info(f"Loading {mode} data from source: {self.data_source}")
 
         for file_name in self.data_path_list:
-            file_path = os.path.join(self.data_source, file_name)
-            logging.info(f"正在加载训练数据: {file_path}")
+            file_path = self.data_source + "/" + file_name
+            logging.info(f"正在加载 {mode} 数据: {file_path}")
+            if not file_name.endswith(".csv"):
+                logging.warning(f"文件 {file_path} 不是 CSV 格式，跳过加载。")
+                continue
+            df = pd.read_csv(file_path)
+            if len(df) < self.min_days:
+                logging.warning(
+                    f"文件 {file_path} 的数据天数不足: {len(df)} < {self.min_days}"
+                )
+                continue
+            if mode == "train":
+                start_date = self.start_date
+                end_date = self.valid_data_start_day - datetime.timedelta(days=1)
+            elif mode == "valid":
+                start_date = self.valid_data_start_day - datetime.timedelta(days=1)
+                end_date = self.test_data_start_day
+            elif mode == "test":
+                start_date = self.test_data_start_day
+                end_date = self.end_date
+            else:
+                logging.warning(f"Unknown mode: {mode}. Skipping file: {file_path}")
+                continue
 
             data = ETFData(
                 dataname=file_path,
                 timeframe=bt.TimeFrame.Days,
-                fromdate=self.start_date,
-                todate=self.valid_data_start_day - datetime.timedelta(days=1),
-                encoding="utf-8-sig",
+                fromdate=start_date,
+                todate=end_date,
             )
-            self.cerebro.adddata(data=data)
-
-    def valid_data_load(self):
-        logging.info("Loading valid data from source: %s", self.data_source)
-
-        for file_name in self.data_path_list:
-            file_path = os.path.join(self.data_source, file_name)
-            logging.info(f"正在加载验证数据: {file_path}")
-
-            data = ETFData(
-                dataname=file_path,
-                timeframe=bt.TimeFrame.Days,
-                fromdate=self.valid_data_start_day - datetime.timedelta(days=1),
-                todate=self.test_data_start_day,
-                encoding="utf-8-sig",
-            )
-            self.cerebro.adddata(data=data)
+            cerebro.adddata(data=data)
+        logging.info(f"{mode} data loading completed.")
+        return cerebro
 
 
 if __name__ == "__main__":
     data_loader = EefDataLoader()
-    data_loader.train_data_load()
+    cerebro1 = data_loader.data_load(mode="train")
+    cerebro2 = data_loader.data_load(mode="valid")
+    cerebro3 = data_loader.data_load(mode="test")
+    pass

@@ -15,9 +15,9 @@ class ETFData(bt.feeds.GenericCSVData):
         ("dtformat", "%Y-%m-%d"),
         ("datetime", 0),
         ("open", 1),
-        ("high", 2),
-        ("low", 3),
-        ("close", 4),
+        ("close", 2),
+        ("high", 3),
+        ("low", 4),
         ("volume", 5),
         ("openinterest", -1),  # A股ETF通常没有持仓量数据
         ("amount", 6),
@@ -27,7 +27,6 @@ class ETFData(bt.feeds.GenericCSVData):
         ("turnover", 10),
         ("etf_code", None),  # ETF代码
         ("etf_name", None),  # ETF名称
-        ("metadata_from_filename", True),  # 是否从文件名自动解析
     )
 
     def __init__(self):
@@ -35,13 +34,14 @@ class ETFData(bt.feeds.GenericCSVData):
         # 创建元数据属性，避免使用lines（节省内存）
         self.etf_code = self.p.etf_code
         self.etf_name = self.p.etf_name
+        self.data_name = self.p.dataname
 
     def start(self):
         """在数据开始前解析元数据"""
         super().start()
 
         # 从文件名自动解析元数据
-        if self.p.metadata_from_filename and not self.etf_code:
+        if not self.etf_code:
             filename = self.p.dataname
             if isinstance(filename, str):
                 # 提取纯文件名（不含路径和扩展名）
@@ -59,3 +59,31 @@ class ETFData(bt.feeds.GenericCSVData):
             self.etf_code = "UNKNOWN"
         if not self.etf_name:
             self.etf_name = "Unknown ETF"
+
+
+if __name__ == "__main__":
+    cerebro = bt.Cerebro()
+    cerebro.broker.setcash(100000.0)
+    cerebro.broker.setcommission(commission=0.005)
+    dataname = os.path.join(
+        "D:/",
+        "stocks",
+        "download",
+        "etfs",
+        "daily",
+        "510330_沪深300ETF华夏.csv",
+    )
+    data = ETFData(
+        dataname=dataname,
+        timeframe=bt.TimeFrame.Days,
+        fromdate=datetime.datetime(2014, 9, 1),
+        todate=datetime.datetime(2025, 6, 1),
+        # encoding="utf-8-sig",
+    )
+    cerebro.addstrategy(bt.strategies.MA_CrossOver)
+    cerebro.adddata(data, name="510330")
+    cerebro.run()
+    final_cash = cerebro.broker.getvalue()
+    print(f"最终资金: {final_cash:.2f} 元")
+    # cerebro.plot(style="candlestick")
+    print("end")

@@ -25,18 +25,17 @@ cerebro.broker.setcommission(commission=initial_commission)
 
 # 添加数据
 modpath = os.path.dirname(os.path.abspath(sys.argv[0]))
-datapath = os.path.join(modpath, "download").join("etfs")
+datapath = os.path.join(modpath, "download", "etfs", "daily")
 data_ls = os.listdir(datapath)
-data_ls.pop(0)
 
-for f_path in data_ls:
-    dataname = os.path.join(datapath, f_path)
+dataname = os.path.join(datapath, data_ls[0])
+if dataname.endswith("csv"):
     data = ETFData(
         dataname=dataname,
         timeframe=bt.TimeFrame.Days,
         fromdate=datetime.datetime(2014, 9, 1),
         todate=datetime.datetime(2024, 6, 1),
-        encoding="utf-8-sig",
+        # encoding="utf-8-sig",
     )
     cerebro.adddata(data)
 

@@ -4,7 +4,7 @@ import datetime
 import pandas as pd
 import backtrader as bt
 
-from etf_data import ETFData
+from .etf_data import ETFData
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -14,10 +14,10 @@ logging.basicConfig(
 class EefDataLoader:
     def __init__(
         self,
-        data_source="download/etfs/daily",
+        data_source: str | os.PathLike,
         min_days=180,
-        start_date="2014-09-01",
-        end_date=datetime.datetime.now().strftime("%Y-%m-%d"),
+        start_date=datetime.datetime(2014, 9, 1),
+        end_date=datetime.datetime.now(),
         valid_ratio=0.2,
         test_ratio=None,
     ):
@@ -29,7 +29,7 @@ class EefDataLoader:
         self.valid_ratio = valid_ratio
         self.test_ratio = test_ratio
 
-        if self.test_ratio:
+        if self.test_ratio is not None:
             self.test_ratio = valid_ratio
             self.test_data_start_day = self.get_test_data_start_day()
         else:
@@ -37,21 +37,15 @@ class EefDataLoader:
         self.valid_data_start_day = self.get_valid_data_start_day()
 
     def get_valid_data_start_day(self):
-        datetime_format = "%Y-%m-%d"
-        start_dt = datetime.datetime.strptime(self.start_date, datetime_format)
-        end_dt = datetime.datetime.strptime(self.end_date, datetime_format)
-        total_days = (end_dt - start_dt).days
+        total_days = (self.end_date - self.start_date).days
         valid_days = int(total_days * self.valid_ratio)
-        valid_start_date = end_dt - datetime.timedelta(days=valid_days)
+        valid_start_date = self.end_date - datetime.timedelta(days=valid_days)
         return valid_start_date
 
     def get_test_data_start_day(self):
-        datetime_format = "%Y-%m-%d"
-        start_dt = datetime.datetime.strptime(self.start_date, datetime_format)
-        end_dt = datetime.datetime.strptime(self.end_date, datetime_format)
-        total_days = (end_dt - start_dt).days
+        total_days = (self.end_date - self.start_date).days
         test_days = int(total_days * self.test_ratio)
-        test_start_date = end_dt - datetime.timedelta(days=test_days)
+        test_start_date = self.end_date - datetime.timedelta(days=test_days)
         return test_start_date
 
     def data_load(self, cerebro: bt.Cerebro = None, mode="train"):
@@ -96,8 +90,11 @@ class EefDataLoader:
 
 
 if __name__ == "__main__":
-    data_loader = EefDataLoader()
+    data_loader = EefDataLoader(data_source="D:/stocks/download/etfs/daily")
     cerebro1 = data_loader.data_load(mode="train")
     cerebro2 = data_loader.data_load(mode="valid")
     cerebro3 = data_loader.data_load(mode="test")
+    cerebro1.broker.setcash(100000.0)
+    cerebro1.broker.setcommission(commission=0.005)
+
     pass

@@ -47,17 +47,26 @@ class UnpopularStrategy(bt.Strategy):
         self.logger.addHandler(console_handler)
 
     def notify_order(self, order):
+        # status_map = {
+        #     order.Submitted: "已提交",
+        #     order.Accepted: "已接受",
+        #     order.Partial: "部分成交",
+        #     order.Completed: "已完成",
+        #     order.Canceled: "已取消",
+        #     order.Margin: "保证金不足",
+        #     order.Rejected: "已拒绝",
+        # }
         if order.status in [order.Submitted, order.Accepted]:
             return
 
         if order.status in [order.Completed]:
             if order.isbuy():
                 self.logger.info(
-                    f"买入 {self.data0} 100 股, 价格: {order.executed.price}"
+                    f"买入 {order.data.etf_code}_{order.data.etf_name} {order.size} 股, 价格: {order.executed.price}"
                 )
             elif order.issell():
                 self.logger.info(
-                    f"卖出 {self.data0} 100 股, 价格: {order.executed.price}"
+                    f"卖出 {order.data.etf_code}_{order.data.etf_name} {order.size} 股, 价格: {order.executed.price}"
                 )
 
         elif order.status in [order.Canceled, order.Margin, order.Rejected]:
@@ -84,9 +93,6 @@ class UnpopularStrategy(bt.Strategy):
 
             if size > 0:
                 self.order = self.close(data)
-                self.logger.info(
-                    f"清仓: 已卖出{data.etf_code}_{data.etf_name} {size}股"
-                )
 
     def next(self):
         for i, data in enumerate(self.datas):
@@ -123,17 +129,17 @@ class UnpopularStrategy(bt.Strategy):
 
                     self.logger.warning(f"填入的标的数不足{self.etf_target_numbers}个")
 
-        # TODO:此处存在bug
         if len(min_volume_datas) != 0:
             if self.bought_etfs == None:  # 若未持仓
-                self.buy_etfs(data=min_volume_datas)  # 购买所有目标etf
+                self.buy_etfs(datas=min_volume_datas)  # 购买所有目标etf
                 self.bought_etfs = min_volume_datas  # 记录持仓的etf表
             else:  # 若已持仓
                 if self.num_days != self.pos_days:  # 在持仓时间未达标时
                     self.num_days += self.pos_days
                 else:  # 持仓时间达标时
-                    self.sell_etfs(self.bought_etfs)
-                    self.bought_etfs = None
+                    self.num_days = 0  # 从新记时
+                    self.sell_etfs(self.bought_etfs)  # 卖掉所有etf
+                    self.bought_etfs = None  # 重置为未持仓状态
 
 
 if __name__ == "__main__":
@@ -173,6 +179,6 @@ if __name__ == "__main__":
     logging.info("正在启动回测...")
     cerebro.run()
     final_cash = cerebro.broker.getvalue()
-    print(f"最终资金: {final_cash:.2f} 元")
+    print(f"最终价值: {final_cash:.2f} 元")
     # cerebro.plot(style="candlestick")
     print("end")

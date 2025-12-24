@@ -48,9 +48,8 @@ class EefDataLoader:
         test_start_date = self.end_date - datetime.timedelta(days=test_days)
         return test_start_date
 
-    def data_load(self, cerebro: bt.Cerebro = None, mode="train"):
-        if cerebro is None:
-            cerebro = bt.Cerebro()
+    def data_load(self, mode="train"):
+        data_list = []
         logging.info(f"Loading {mode} data from source: {self.data_source}")
 
         for file_name in self.data_path_list:
@@ -84,9 +83,9 @@ class EefDataLoader:
                 fromdate=start_date,
                 todate=end_date,
             )
-            cerebro.adddata(data=data)
+            data_list.append(data)
         logging.info(f"{mode} data loading completed.")
-        return cerebro
+        return data_list
 
 
 if __name__ == "__main__":

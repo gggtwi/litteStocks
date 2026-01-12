@@ -14,17 +14,8 @@ import argparse
 from datetime import datetime
 from typing import List, Optional, Dict, Any
 
-# 添加模块搜索路径
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
+from litteStocks.data_down.etf_data_manager import ETFDataDownloader
 
-try:
-    # 从上传的文件导入ETFDataDownloader
-    from litteStocks.etf_data_manager import ETFDataDownloader
-except ImportError as e:
-    print(f"❌ 导入错误: {str(e)}")
-    print("请确保 etf_data_manager.py 与本脚本在同一目录")
-    sys.exit(1)
 
 def setup_logger(log_level: int = logging.INFO) -> logging.Logger:
     """配置日志记录器"""
@@ -133,9 +124,9 @@ def main():
     parser.add_argument('--log-level', type=str, default='INFO',
                         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                         help='日志级别')
-    parser.add_argument('--download-dir', type=str, default='download',
+    parser.add_argument('--download-dir', type=str, default='download/etf_data/',
                         help='下载目录路径')
-    parser.add_argument('--progress-file', type=str, default='download/etf_download_progress.json',
+    parser.add_argument('--progress-file', type=str, default='download/etf_data/etf_download_progress.json',
                         help='进度文件路径')
     parser.add_argument('--max-retries', type=int, default=3, help='最大重试次数')
     parser.add_argument('--retry-delay', type=float, default=2.0, help='基础重试延迟(秒)')
@@ -237,10 +228,10 @@ def main():
         # 快速入门提示
         if result.get('success_count', 0) > 0: # type: ignore
             logger.info("\n💡 快速入门提示:")
-            logger.info("  - 要更新已有数据: python data_download.py --update")
-            logger.info("  - 要下载所有ETF: python data_download.py --full")
-            logger.info("  - 要下载完整历史: python data_download.py --full --full-history")
-            logger.info("  - 要下载特定ETF: python data_download.py --symbol 513500")
+            logger.info("  - 要更新已有数据: python etf_data_download.py --update")
+            logger.info("  - 要下载所有ETF: python etf_data_download.py --full")
+            logger.info("  - 要下载完整历史: python etf_data_download.py --full --full-history")
+            logger.info("  - 要下载特定ETF: python etf_data_download.py --symbol 513500")
         
         return 0
         

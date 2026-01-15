@@ -12,9 +12,11 @@ from litteStocks.factor.relative_ratio_volume_factor import (
 
 def test_relative_ratio_volume_factor(code: str):
     ins = RelativeRatioVolumeFactorForGet(
-        data_path=current_dir_parent.replace("\\", "/"), symbol=code
+        root_path=current_dir_parent.replace("\\", "/"),
+        symbol=code,
+        code_name_dict_path="download/stocks/stocks_code_name_dict.json",
     )
-    factor_value = ins.get_single_day_code_factor(day="2023-01-01")
+    factor_value = ins.get_single_code_factor_by_day(day="2026-01-08")
     assert factor_value is not None, "Factor value should not be None"
     print(factor_value)
 

@@ -6,12 +6,12 @@ Date: 2026/1/10
 
 import os
 import time
+import json
 import logging
 import akshare as ak
 import pandas as pd
-from litteStocks.utils.logger_utils import setup_logger
 from tenacity import retry, stop_after_attempt, wait_fixed
-from litteStocks.utils.date_utils import dateUtils
+from litteStocks.utils import setup_logger, dateUtils, JsonSaveLoadUtils
 
 
 class stocksDataDownload:
@@ -22,6 +22,7 @@ class stocksDataDownload:
         start_date="19700101",
         end_date="20500101",
         save_path="download/stocks",
+        code_name_dict_filename="stocks_code_name_dict.json",
         log_level=logging.INFO,
         mode="update",
     ):
@@ -33,6 +34,7 @@ class stocksDataDownload:
         self.start_date = start_date
         self.end_date = end_date
         self.save_path = os.path.join(os.getcwd(), save_path).replace("\\", "/")
+        self.code_name_dict_filename = code_name_dict_filename
         self.log_level = log_level
         self.logger = setup_logger("stocksDataDownload", self.log_level)
         if mode == "update":
@@ -43,6 +45,11 @@ class stocksDataDownload:
         self.logger.info(f"正在查找A股代码...")
 
         symbols = ak.stock_info_a_code_name()
+
+        code_name_dict = {}
+        for _, row in symbols.iterrows():
+            code_name_dict[row["code"]] = row["name"].replace("*", "")
+        self.save_symbols_dict(code_name_dict)
 
         if all:
             symbols_ls = symbols.values.tolist()
@@ -76,7 +83,6 @@ class stocksDataDownload:
     # 下载所有stocks
     def download_all_stocks(self, update_all_symbols=False):
         symbols = self.load_symbol_list(all=update_all_symbols)
-
         for i, symbol in enumerate(symbols):
             code, name = symbol
             self.logger.info(f"[{i}/{len(symbols)}] 开始下载: {code}({name})")
@@ -94,6 +100,14 @@ class stocksDataDownload:
             )
             self.logger.info(f"成功下载 {code}({name}) - 共{len(stock_data_df)}条记录")
             time.sleep(0.8)  # 等待0.8秒再下载下一个防止被ban
+
+    # 保存股票代码与名称对应关系
+    def save_symbols_dict(self, symbols_dict):
+        json_save_path = os.path.join(
+            self.save_path, "stocks_code_name_dict.json"
+        ).replace("\\", "/")
+        JsonSaveLoadUtils().save_dict_to_json(symbols_dict, json_save_path)
+        self.logger.info(f"已保存股票代码与名称对应关系到 {json_save_path}")
 
     # 将数据更新到今日
     def update_stocks_data(self):

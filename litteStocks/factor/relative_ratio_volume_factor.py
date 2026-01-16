@@ -50,7 +50,15 @@ class RelativeRatioVolumeFactor:
             os.makedirs(csv_path)
         self.logger.info(f"开始计算并保存 {self.factor_name} 因子文件...")
         for index, data_name in enumerate(data_names):
+            if not data_name.endswith(".csv"):
+                continue
             data_df = pd.read_csv(f"{self.root_path}/download/stocks/{data_name}")
+            
+            # 判断文件是否读取成功
+            if data_df is None or data_df.empty:
+                self.logger.error(f"文件读取失败: {self.root_path}/download/stocks/{data_name}")
+                continue
+
             df = self._factor_formula(data_df)
             df.to_csv(f"{csv_path}/{data_name.split('_')[0]}.csv", index=False)
             self.logger.info(
@@ -81,6 +89,9 @@ class RelativeRatioVolumeFactor:
             return None
         stock_df = pd.read_csv(stock_csv_path)
         factor_df = pd.read_csv(factor_csv_path)
+        if "日期" not in factor_df.columns:
+            self.logger.error(f"当前因子文件无日期列，正在重新计算因子文件...")
+            raise RuntimeError("请重新计算因子文件")
         merged_df = pd.merge(stock_df, factor_df, on="日期", how="inner")
 
         return merged_df
@@ -91,12 +102,10 @@ class RelativeRatioVolumeFactorForGet:
         self,
         root_path="",
         n_days=20,
-        factor_only=False,
         code_name_dict_path="download/stocks/stocks_code_name_dict.json",
     ):
         self.root_path = root_path
         self.n_days = n_days
-        self.factor_only = factor_only
         self.code_name_dict_path = code_name_dict_path
 
     def get_code_factor_merge_by_code(self, code) -> pd.DataFrame:
@@ -105,3 +114,10 @@ class RelativeRatioVolumeFactorForGet:
             n_days=self.n_days,
             code_name_dict_path=self.code_name_dict_path,
         )._get_code_factor_merge_by_code(code)
+
+    def make_factor_csv(self):
+        RelativeRatioVolumeFactor(
+            root_path=self.root_path,
+            n_days=self.n_days,
+            code_name_dict_path=self.code_name_dict_path,
+        )._make_factor_csv()

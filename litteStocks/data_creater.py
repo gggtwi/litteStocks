@@ -65,7 +65,7 @@ class DataCreater:
         )
         return all_df
 
-    def create_data(self):
+    def get_parquet_data(self):
         """创建数据主函数"""
         if os.path.exists(f"{self.root_path}/download/parquet/all_stock_data.parquet"):
             self.logger.info("已存在合并数据文件，直接加载...")

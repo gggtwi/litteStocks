@@ -8,7 +8,7 @@ from litteStocks.data_creater import DataCreater
 
 def test_data_creater():
     data_creater = DataCreater(root_path=run_dir)
-    merged_data = data_creater.create_data()
+    merged_data = data_creater.get_parquet_data()
     print(merged_data.head(5))
 
 
